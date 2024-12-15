@@ -27,12 +27,15 @@ namespace Mastermind_project_WPL1
         private string[] highscores = new string[15];
         private int highscoreCount = 0;
 
+        private List<string> playerNames;
+        private int currentPlayerIndex = 0;
+
         public MainWindow()
         {
             InitializeComponent();
 
             // Start het spel
-            startGame();
+            playerNames = startGame();
 
             // Initialiseer de timer
             timer = new DispatcherTimer
@@ -154,13 +157,17 @@ namespace Mastermind_project_WPL1
             // Haal de gegenereerde kleurencode op
             string[] targetColors = targetColorCode.Split(" - ");
 
+            string currentPlayer = playerNames[currentPlayerIndex];
+            string nextPlayer = playerNames[((currentPlayerIndex + 1) % playerNames.Count)];
+
             // Controleer of de geselecteerde kleuren overeenkomen met de gegenereerde code
             if (selectedColors.SequenceEqual(targetColors))
             {
-                stopCountdown();
+                MessageBox.Show($"Gefeliciteerd! Je hebt de code gekraakt in {attempts} pogingen. \nNu is speler {nextPlayer} aan de beurt.", currentPlayer);
+                currentPlayerIndex = (currentPlayerIndex + 1) % playerNames.Count;
                 resetGame();
-                generateRandomColorCode();
-                // askToPlayAgain($"Gefeliciteerd! Je hebt de code gekraakt in {attempts} pogingen.");
+                targetColorCode = generateRandomColorCode();
+                debugTextBox.Text = targetColorCode;
                 return;
             }
 
@@ -229,9 +236,9 @@ namespace Mastermind_project_WPL1
             // Controleer of de kleur op de juiste plaats staat
             if (targetColors[index] == selectedColor)
             {
-                label.BorderBrush = Brushes.Red; // Rood = correcte plaats
+                label.BorderBrush = Brushes.Red;
                 label.BorderThickness = new Thickness(4);
-                correctPositions[index] = true; // Markeer deze positie als correct
+                correctPositions[index] = true;
             }
             else if (Array.Exists(targetColors, color => color == selectedColor))
             {
@@ -249,18 +256,18 @@ namespace Mastermind_project_WPL1
 
                 if (alreadyMarked)
                 {
-                    label.BorderBrush = Brushes.Yellow; // Geel = verkeerde plaats
+                    label.BorderBrush = Brushes.Yellow;
                     label.BorderThickness = new Thickness(4);
                 }
                 else
                 {
-                    label.BorderBrush = Brushes.Transparent; // Geen effect
+                    label.BorderBrush = Brushes.Transparent;
                     label.BorderThickness = new Thickness(0);
                 }
             }
             else
             {
-                label.BorderBrush = Brushes.Transparent; // Niet aanwezig in de code
+                label.BorderBrush = Brushes.Transparent;
                 label.BorderThickness = new Thickness(0);
             }
         }
@@ -302,10 +309,13 @@ namespace Mastermind_project_WPL1
         // Methode om de window title te updaten
         private void updateWindowTitle()
         {
+            string currentPlayer = playerNames[currentPlayerIndex];
+            string nextPlayer = playerNames[((currentPlayerIndex + 1) % playerNames.Count)];
+
             if (attempts > 10)
             {
-                // askToPlayAgain($"Je hebt verloren! De code was: {targetColorCode}");
-                MessageBox.Show($"Je hebt verloren! De code was: {targetColorCode}");
+                MessageBox.Show($"Je hebt verloren! De code was: {targetColorCode}. \nNu is het {nextPlayer} zijn beurt.", currentPlayer);
+                currentPlayerIndex = (currentPlayerIndex + 1) % playerNames.Count;
                 resetGame();
                 generateRandomColorCode();
                 return;
@@ -354,12 +364,13 @@ namespace Mastermind_project_WPL1
         /// </summary>
         private void stopCountdown()
         {
+            string currentPlayer = playerNames[currentPlayerIndex];
+            string nextPlayer = playerNames[((currentPlayerIndex + 1) % playerNames.Count)];
 
-            // Controleer of het maximum aantal pogingen is bereikt
             if (attempts > 10)
             {
-                // askToPlayAgain($"Je hebt verloren! De code was: {targetColorCode} \nNu is speler {playerNames[currentPlayer]} aan de beurt.");
-                MessageBox.Show($"Je hebt verloren! De code was: {targetColorCode}.");
+                MessageBox.Show($"Je hebt verloren! De code was: {targetColorCode}. \nNu is het {nextPlayer} zijn beurt.", currentPlayer);
+                currentPlayerIndex = (currentPlayerIndex + 1) % playerNames.Count;
                 resetGame();
                 generateRandomColorCode();
                 return;
@@ -417,29 +428,19 @@ namespace Mastermind_project_WPL1
             }
         }
 
-        /* private void askToPlayAgain(string message)
-        {
-            MessageBoxResult result = MessageBox.Show(message + "\nWil je opnieuw spelen?", "Nog een spel?", MessageBoxButton.YesNo, MessageBoxImage.Question);
-
-            if (result == MessageBoxResult.Yes)
-            {
-                resetGame();
-            }
-            else
-            {
-                Application.Current.Shutdown();
-            }
-        } */
-
         private List<string> startGame()
         {
             List<string> playerNames = new List<string>();
 
-            do
+
+            bool addAnotherPlayer = true;
+
+            while (addAnotherPlayer)
             {
                 // Vraag de naam van de speler
                 string playerName = "";
-                do
+
+                while (string.IsNullOrWhiteSpace(playerName))
                 {
                     playerName = Microsoft.VisualBasic.Interaction.InputBox(
                         "Geef de naam van de speler in:",
@@ -454,15 +455,19 @@ namespace Mastermind_project_WPL1
                                         MessageBoxImage.Warning);
                     }
 
-                } while (string.IsNullOrWhiteSpace(playerName));
+                }
 
                 // Voeg de naam toe aan de lijst
                 playerNames.Add(playerName);
 
-            } while (MessageBox.Show("Wil je nog een speler toevoegen?",
-                                      "Nog een speler?",
-                                      MessageBoxButton.YesNo,
-                                      MessageBoxImage.Question) == MessageBoxResult.Yes);
+                // Vraag of de gebruiker nog een speler wil toevoegen
+                MessageBoxResult result = MessageBox.Show("Wil je nog een speler toevoegen?",
+                                                          "Nog een speler?",
+                                                          MessageBoxButton.YesNo,
+                                                          MessageBoxImage.Question);
+
+                addAnotherPlayer = result == MessageBoxResult.Yes;
+            }
 
             return playerNames;
         }
