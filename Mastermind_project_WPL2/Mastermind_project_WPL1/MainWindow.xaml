@@ -23,10 +23,29 @@
         <ComboBox Name="comboBox2" HorizontalAlignment="Left" Height="19" Margin="363,30,0,0" VerticalAlignment="Top" Width="162"/>
         <ComboBox Name="comboBox4" HorizontalAlignment="Left" Height="19" Margin="363,150,0,0" VerticalAlignment="Top" Width="162"/>
 
-        <Label Name="label1" Content="" HorizontalAlignment="Left" Height="91" Margin="196,54,0,0" VerticalAlignment="Top" Width="162"/>
-        <Label Name="label2" Content="" HorizontalAlignment="Left" Height="91" Margin="363,54,0,0" VerticalAlignment="Top" Width="162"/>
-        <Label Name="label4" Content="" HorizontalAlignment="Left" Height="91" Margin="363,174,0,0" VerticalAlignment="Top" Width="162"/>
-        <Label Name="label3" Content="" HorizontalAlignment="Left" Height="91" Margin="196,174,0,0" VerticalAlignment="Top" Width="162"/>
+        <Label Name="label1" Content="" HorizontalAlignment="Left" Height="91" Margin="196,54,0,0" VerticalAlignment="Top" Width="162">
+            <Label.ToolTip>
+                <ToolTip Content="Juiste kleur, foute positie"/>
+            </Label.ToolTip>
+        </Label>
+
+        <Label Name="label2" Content="" HorizontalAlignment="Left" Height="91" Margin="363,54,0,0" VerticalAlignment="Top" Width="162">
+            <Label.ToolTip>
+                <ToolTip Content="Juiste kleur, foute positie"/>
+            </Label.ToolTip>
+        </Label>
+
+        <Label Name="label4" Content="" HorizontalAlignment="Left" Height="91" Margin="363,174,0,0" VerticalAlignment="Top" Width="162">
+            <Label.ToolTip>
+                <ToolTip Content="Juiste kleur, foute positie"/>
+            </Label.ToolTip>
+        </Label>
+
+        <Label Name="label3" Content="" HorizontalAlignment="Left" Height="91" Margin="196,174,0,0" VerticalAlignment="Top" Width="162">
+            <Label.ToolTip>
+                <ToolTip Content="Juiste kleur, foute positie"/>
+            </Label.ToolTip>
+        </Label>
 
         <Button Name="checkButton" Content="Check code" HorizontalAlignment="Left" Height="30" Margin="196,383,0,0" VerticalAlignment="Top" Width="334" Click="checkButton_Click"/>
         <TextBox Name="debugTextBox" IsReadOnly="True" Visibility="Collapsed" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="10" Background="LightGray" />

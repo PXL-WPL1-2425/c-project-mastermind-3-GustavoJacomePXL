@@ -238,6 +238,7 @@ namespace Mastermind_project_WPL1
             {
                 label.BorderBrush = Brushes.Red;
                 label.BorderThickness = new Thickness(4);
+                label.ToolTip = "Juiste kleur, juiste positie";
                 correctPositions[index] = true;
             }
             else if (Array.Exists(targetColors, color => color == selectedColor))
@@ -258,17 +259,20 @@ namespace Mastermind_project_WPL1
                 {
                     label.BorderBrush = Brushes.Yellow;
                     label.BorderThickness = new Thickness(4);
+                    label.ToolTip = "Juiste kleur, foute positie";
                 }
                 else
                 {
                     label.BorderBrush = Brushes.Transparent;
                     label.BorderThickness = new Thickness(0);
+                    label.ToolTip = "Foute kleur";
                 }
             }
             else
             {
                 label.BorderBrush = Brushes.Transparent;
                 label.BorderThickness = new Thickness(0);
+                label.ToolTip = "Foute kleur";
             }
         }
 
