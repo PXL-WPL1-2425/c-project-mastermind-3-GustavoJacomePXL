@@ -322,7 +322,7 @@ namespace Mastermind_project_WPL1
             }
             else
             {
-                this.Title = $"Poging {attempts} - Tijd: {remainingTime} seconden";
+                this.Title = $"Poging {attempts} - Tijd: {remainingTime} seconden - Actieve Speler: {playerNames[currentPlayerIndex]}";
             }
         }
 
